@@ -17,6 +17,7 @@ buildNumber.properties
 .idea
 **/.mvn
 *.iml
+out/
 
 # 配置文件
 **/application.yml

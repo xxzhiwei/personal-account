@@ -32,5 +32,6 @@ public abstract class RecordService extends AccountService {
         }
         application.getWriter().write(detail, textDataFormatter);
         application.getDataRepository().addDetail(detail);
+        System.out.println("登记成功！");
     }
 }

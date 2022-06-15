@@ -94,16 +94,16 @@ public class Application {
         boolean contained = true;
         // 2、运行服务
         while (!exited) {
+            if (!contained) {
+                System.out.println("请输入正确的服务序号");
+            }
+
             System.out.println("\n《个人记账软件》\n");
+
             for (String item : menus) {
                 System.out.println(item);
             }
-            if (contained) {
-                System.out.print("请选择：");
-            }
-            else {
-                System.out.print(CommandLineUtil.numTips);
-            }
+            System.out.print("请选择：");
             int no = CommandLineUtil.readInt();
             contained = serviceMap.containsKey(no);
             if (!contained) {

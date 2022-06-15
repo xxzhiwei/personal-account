@@ -16,8 +16,8 @@ public class DetailService extends AccountService {
 
     @Override
     public void execute() {
-        System.out.println("《收支明细记录》");
-        System.out.println("金额/类型/备注/日期\n");
+        System.out.println("\n《收支明细记录》");
+        System.out.println("金额/类型/备注/日期");
         System.out.println("----------------");
         List<Detail> details = application.getDataRepository().getDetails();
         for (Detail detail : details) {
