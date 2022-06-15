@@ -16,6 +16,7 @@ public class Reader {
     public <T> List<T> read(DataHandler<T, String> handler) {
         File file = new File(path);
         if (!file.exists()) {
+            System.out.println("文件不存在");
             return null;
         }
         List<T> list = new ArrayList<>();

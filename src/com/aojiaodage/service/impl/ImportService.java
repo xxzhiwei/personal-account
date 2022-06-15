@@ -28,12 +28,20 @@ public class ImportService extends AccountService {
     public void execute() {
         System.out.print("请输入文件路径：");
         String filepath = CommandLineUtil.readStr("请输入正确的文件路径：");
-        String suffix = filepath.substring(filepath.lastIndexOf(".") + 1);
+        int suffixIdx = filepath.lastIndexOf(".");
+        if (suffixIdx == -1) {
+            System.out.println("请输入带后缀名的文件");
+            return;
+        }
+        String suffix = filepath.substring(suffixIdx + 1);
         if (!fileImporterMap.containsKey(suffix)) {
             System.out.println("目前暂不支持" + suffix + "格式文件的导入");
             return;
         }
         List<Detail> details = fileImporterMap.get(suffix).importFile(filepath);
+        if (details == null || details.size() == 0) {
+            return;
+        }
         application.getDataRepository().addDetails(details);
         application.getWriter().write(details, data -> {
             StringBuilder stringBuilder = new StringBuilder();
