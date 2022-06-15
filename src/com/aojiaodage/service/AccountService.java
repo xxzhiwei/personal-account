@@ -1,19 +1,14 @@
 package com.aojiaodage.service;
 
+import com.aojiaodage.Application;
+
 public abstract class AccountService {
-    private Integer id;
     private String name;
+    protected Application application;
 
-    public AccountService(Integer id, String name) {
-        this.id = id;
+    public AccountService(String name, Application application) {
         this.name = name;
-    }
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        this.application = application;
     }
 
     public String getName() {
@@ -24,8 +19,5 @@ public abstract class AccountService {
         this.name = name;
     }
 
-    public abstract int execute();
-    public void execute(boolean contained) {
-        throw new RuntimeException("请重新该方法");
-    }
+    public abstract void execute();
 }

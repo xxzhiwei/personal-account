@@ -1,13 +1,13 @@
 package com.aojiaodage.enums;
 
-public enum MoneyType {
-    INCOME(1, "收入"),
-    COST(2, "支出");
+public enum Importers {
+    TEXT("txt", "纯文本文件");
 
-    private final Integer value;
+    private final String value;
+
     private final String desc;
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 
@@ -15,7 +15,7 @@ public enum MoneyType {
         return desc;
     }
 
-    MoneyType(Integer value, String desc) {
+    Importers(String value, String desc) {
         this.value = value;
         this.desc = desc;
     }

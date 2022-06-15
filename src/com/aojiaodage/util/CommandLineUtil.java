@@ -19,7 +19,7 @@ public class CommandLineUtil {
         String str = "";
         while (scanner.hasNext()) {
             str = scanner.nextLine();
-            if (str.length() < 1) {
+            if ("".equals(str)) {
                 System.out.println(tips);
                 continue;
             }
@@ -40,11 +40,11 @@ public class CommandLineUtil {
         }
     }
 
-    public static int readNum() {
-        return readNum(null);
+    public static int readInt() {
+        return readInt(null);
     }
 
-    public static int readNum(String tips) {
+    public static int readInt(String tips) {
         if (tips == null) {
             tips = numTips;
         }
@@ -59,5 +59,22 @@ public class CommandLineUtil {
             }
         }
         return n;
+    }
+
+    public static double readDouble(String tips) {
+        if (tips == null) {
+            tips = numTips;
+        }
+        double d;
+        for (;;) {
+            String str = readStr(tips);
+            try {
+                d = Double.parseDouble(str);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println(tips);
+            }
+        }
+        return d;
     }
 }

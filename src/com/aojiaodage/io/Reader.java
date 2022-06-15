@@ -1,19 +1,24 @@
 package com.aojiaodage.io;
 
-import com.aojiaodage.entity.Detail;
+import com.aojiaodage.handler.DataHandler;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Reader {
+    private final String path;
 
-    public List<Detail> read() {
-        File file = new File("data.txt");
-        List<Detail> details = new ArrayList<>();
+    public Reader(String path) {
+        this.path = path;
+    }
+
+    public <T> List<T> read(DataHandler<T, String> handler) {
+        File file = new File(path);
         if (!file.exists()) {
-            return details;
+            return null;
         }
+        List<T> list = new ArrayList<>();
         FileReader fr;
         BufferedReader br = null;
         String str;
@@ -21,8 +26,10 @@ public class Reader {
             fr = new FileReader(file);
             br = new BufferedReader(fr);
             while ((str = br.readLine()) != null) {
-                Detail detail = Detail.makeFromDetailStr(str);
-                details.add(detail);
+                T entity = handler.handle(str);
+                if (entity != null) {
+                    list.add(entity);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,10 +42,6 @@ public class Reader {
                 e.printStackTrace();
             }
         }
-        return details;
-    }
-
-    public static void main(String[] args) {
-        Reader reader = new Reader();
+        return list;
     }
 }

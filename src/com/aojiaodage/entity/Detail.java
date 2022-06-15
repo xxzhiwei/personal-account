@@ -1,16 +1,16 @@
 package com.aojiaodage.entity;
 
 public class Detail {
-    private Integer money;
+    private Double money;
     private String remark;
     private String date;
     private Integer type;
 
-    public Integer getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 
@@ -39,12 +39,15 @@ public class Detail {
     }
 
     public static Detail makeFromDetailStr(String detailStr) {
+        if (detailStr == null || "".equals(detailStr.trim())) {
+            return null;
+        }
         String[] detailStrArr = detailStr.split(",");
         Detail detail = new Detail();
         if (detailStrArr.length != 4) {
             throw new RuntimeException("数据格式不正确");
         }
-        detail.money = Integer.parseInt(detailStrArr[0]);
+        detail.money = Double.parseDouble(detailStrArr[0]);
         detail.type = Integer.parseInt(detailStrArr[1]);
         detail.remark = detailStrArr[2];
         detail.date = detailStrArr[3];

@@ -1,6 +1,6 @@
 package com.aojiaodage.io;
 
-import com.aojiaodage.entity.Detail;
+import com.aojiaodage.handler.DataHandler;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,13 +8,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Writer {
-    public void write(Detail detail) {
-        File file = new File("data.txt");
+    private final String path;
+    public Writer(String path) {
+        this.path = path;
+    }
+
+    public <T> void write(T t, DataHandler<String, T> handler) {
+        File file = new File(path);
         try {
             if (!file.exists()) {
                 boolean result = file.createNewFile();
                 if (!result) {
-                    throw new RuntimeException("创建data.txt失败");
+                    throw new RuntimeException("创建" + path + "失败");
                 }
             }
         } catch (IOException e) {
@@ -25,7 +30,8 @@ public class Writer {
         try {
             fw = new FileWriter(file, true);
             bw = new BufferedWriter(fw);
-            bw.write(Detail.formatAsDetailStr(detail));
+
+            bw.write(handler.handle(t));
             bw.write("\n");
         } catch (IOException e) {
             e.printStackTrace();

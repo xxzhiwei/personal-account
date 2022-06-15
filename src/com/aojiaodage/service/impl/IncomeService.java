@@ -1,20 +1,21 @@
 package com.aojiaodage.service.impl;
 
+import com.aojiaodage.enums.Services;
+import com.aojiaodage.util.CommandLineUtil;
 import com.aojiaodage.entity.Detail;
 import com.aojiaodage.enums.MoneyType;
-import com.aojiaodage.repository.DataRepository;
-import com.aojiaodage.util.CommandLineUtil;
+import com.aojiaodage.Application;
 
 public class IncomeService extends RecordService {
 
-    public IncomeService(Integer id, String name, DataRepository dataRepository) {
-        super(id, name, dataRepository);
+    public IncomeService(Application application) {
+        super(Services.INCOME.getDesc(), application);
     }
 
     @Override
     public Detail makeDetail() {
         System.out.print("本次" + MoneyType.INCOME.getDesc() + "金额：");
-        int money = CommandLineUtil.readNum("请输入正确的金额");
+        double money = CommandLineUtil.readDouble("请输入正确的金额：");
         Detail detail = new Detail();
         detail.setType(MoneyType.INCOME.getValue());
         detail.setMoney(money);
@@ -22,15 +23,5 @@ public class IncomeService extends RecordService {
         String str = CommandLineUtil.readStr("请输入说明：");
         detail.setRemark(str);
         return detail;
-    }
-
-    @Override
-    public void calculateTotal(Integer money) {
-        this.getDataRepository().increase(money);
-    }
-
-    @Override
-    public int execute() {
-        return super.execute();
     }
 }

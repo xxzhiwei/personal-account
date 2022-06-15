@@ -2,25 +2,21 @@ package com.aojiaodage.service.impl;
 
 import com.aojiaodage.entity.Detail;
 import com.aojiaodage.enums.MoneyType;
-import com.aojiaodage.repository.DataRepository;
+import com.aojiaodage.enums.Services;
 import com.aojiaodage.util.CommandLineUtil;
+import com.aojiaodage.Application;
 
 public class CostService extends RecordService {
 
-    public CostService(Integer id, String name, DataRepository dataRepository) {
-        super(id, name, dataRepository);
-    }
-
-    @Override
-    public void calculateTotal(Integer money) {
-        this.getDataRepository().decrease(money);
+    public CostService(Application application) {
+        super(Services.COST.getDesc(), application);
     }
 
     @Override
     public Detail makeDetail() {
         System.out.print("本次" + MoneyType.COST.getDesc() + "金额：");
-        int money = CommandLineUtil.readNum("请输入正确的金额");
-        if (this.getDataRepository().getTotal() < money) {
+        double money = CommandLineUtil.readDouble("请输入正确的金额：");
+        if (application.getDataRepository().getTotal() < money) {
             System.out.println("\n>> 余额不足");
             return null;
         }
@@ -31,10 +27,5 @@ public class CostService extends RecordService {
         String str = CommandLineUtil.readStr("请输入说明：");
         detail.setRemark(str);
         return detail;
-    }
-
-    @Override
-    public int execute() {
-        return super.execute();
     }
 }

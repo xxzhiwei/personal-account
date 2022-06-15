@@ -2,47 +2,50 @@ package com.aojiaodage.repository;
 
 import com.aojiaodage.entity.Detail;
 import com.aojiaodage.enums.MoneyType;
-import com.aojiaodage.io.Writer;
 
 import java.util.List;
 
 public class DataRepository {
     private final List<Detail> details;
-    private Integer total;
-    private final Writer writer;
+    private Double total;
 
     public List<Detail> getDetails() {
         return details;
     }
-
-    public Integer getTotal() {
-        return total;
+    public void addDetail(Detail detail) {
+        details.add(detail);
+        if (MoneyType.INCOME.getValue().equals(detail.getType())) {
+            total += detail.getMoney();
+        } else {
+            total -= detail.getMoney();
+        }
     }
 
-    public Writer getWriter() {
-        return writer;
+    public void addDetails(List<Detail> details) {
+        this.details.addAll(details);
+        calculateTotal();
     }
 
-    public DataRepository(List<Detail> details, Writer writer) {
-        this.details = details;
-        this.writer = writer;
-        Integer total = 0;
-        for (Detail detail : details) {
-            if (MoneyType.INCOME.getValue().equals(detail.getType())) {
-                total += detail.getMoney();
-            }
-            else {
-                total -= detail.getMoney();
+    private void calculateTotal() {
+        Double total = 0.0;
+        if (details != null) {
+            for (Detail detail : details) {
+                if (MoneyType.INCOME.getValue().equals(detail.getType())) {
+                    total += detail.getMoney();
+                } else {
+                    total -= detail.getMoney();
+                }
             }
         }
         this.total = total;
     }
 
-    public void increase(Integer money) {
-        total += money;
+    public Double getTotal() {
+        return total;
     }
 
-    public void decrease(Integer money) {
-        total -= money;
+    public DataRepository(List<Detail> details) {
+        this.details = details;
+        calculateTotal();
     }
 }
