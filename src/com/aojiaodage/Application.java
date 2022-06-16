@@ -8,9 +8,8 @@ import com.aojiaodage.repository.DataRepository;
 import com.aojiaodage.service.AccountService;
 import com.aojiaodage.util.CommandLineUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
@@ -73,17 +72,16 @@ public class Application {
     public void run() {
         // 0、加载配置文件
         Properties properties = new Properties();
-        File file = new File("resources/service.properties");
-        FileInputStream fis = null;
+        // 通过当前类的classLoader加载配置文件
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("account.properties");
         try {
-            fis = new FileInputStream(file);
-            properties.load(fis);
+            properties.load(is);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (fis != null) {
-                    fis.close();
+                if (is != null) {
+                    is.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

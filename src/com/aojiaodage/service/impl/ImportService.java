@@ -10,6 +10,7 @@ import com.aojiaodage.Application;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ImportService extends AccountService {
@@ -34,7 +35,7 @@ public class ImportService extends AccountService {
             return;
         }
         String suffix = filepath.substring(suffixIdx + 1);
-        if (!fileImporterMap.containsKey(suffix)) {
+        if (!fileImporterMap.containsKey(suffix.toLowerCase(Locale.ROOT))) {
             System.out.println("目前暂不支持" + suffix + "格式文件的导入");
             return;
         }

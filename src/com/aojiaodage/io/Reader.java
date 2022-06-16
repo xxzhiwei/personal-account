@@ -15,17 +15,16 @@ public class Reader {
 
     public <T> List<T> read(DataHandler<T, String> handler) {
         File file = new File(path);
-        if (!file.exists()) {
-            System.out.println("文件不存在");
-            return null;
-        }
         List<T> list = new ArrayList<>();
-        FileReader fr;
+        if (!file.exists()) {
+            return list;
+        }
         BufferedReader br = null;
+        InputStreamReader isr;
         String str;
         try {
-            fr = new FileReader(file);
-            br = new BufferedReader(fr);
+            isr = new FileReader(file);
+            br = new BufferedReader(isr);
             while ((str = br.readLine()) != null) {
                 T entity = handler.handle(str);
                 if (entity != null) {

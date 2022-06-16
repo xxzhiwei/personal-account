@@ -15,15 +15,24 @@ public class Writer {
 
     public <T> void write(T t, DataHandler<String, T> handler) {
         File file = new File(path);
-        try {
-            if (!file.exists()) {
-                boolean result = file.createNewFile();
-                if (!result) {
-                    throw new RuntimeException("创建" + path + "失败");
+        if (!file.exists()) {
+            File parentFile = file.getParentFile();
+            if (parentFile != null) {
+                if (!parentFile.exists()) {
+                    boolean created = parentFile.mkdirs();
+                    if (!created) {
+                        throw new RuntimeException("创建" + parentFile.getPath() + "失败");
+                    }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                boolean created = file.createNewFile();
+                if (!created) {
+                    throw new RuntimeException("创建" + file.getPath() + "失败");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         FileWriter fw;
         BufferedWriter bw = null;
