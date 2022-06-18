@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TextImporter implements FileImporter<List<Detail>> {
     @Override
-    public List<Detail> importFile(String path) {
+    public List<Detail> importFile(String path) throws Exception {
         Reader reader = new Reader(path);
         return reader.read(new TextDataHandlerImpl());
     }

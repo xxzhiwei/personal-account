@@ -1,6 +1,6 @@
 package com.aojiaodage.enums;
 
-public enum Importers {
+public enum FileTypes {
     TEXT("txt", "纯文本文件");
 
     private final String value;
@@ -15,7 +15,7 @@ public enum Importers {
         return desc;
     }
 
-    Importers(String value, String desc) {
+    FileTypes(String value, String desc) {
         this.value = value;
         this.desc = desc;
     }

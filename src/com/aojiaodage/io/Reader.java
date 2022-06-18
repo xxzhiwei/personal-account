@@ -13,7 +13,7 @@ public class Reader {
         this.path = path;
     }
 
-    public <T> List<T> read(DataHandler<T, String> handler) {
+    public <T> List<T> read(DataHandler<T, String> handler) throws Exception {
         File file = new File(path);
         List<T> list = new ArrayList<>();
         if (!file.exists()) {
@@ -31,8 +31,6 @@ public class Reader {
                     list.add(entity);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             try {
                 if (br != null) {

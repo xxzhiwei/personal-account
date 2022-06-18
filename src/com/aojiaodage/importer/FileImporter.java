@@ -1,5 +1,5 @@
 package com.aojiaodage.importer;
 
 public interface FileImporter<T> {
-    T importFile(String path);
+    T importFile(String path) throws Exception;
 }

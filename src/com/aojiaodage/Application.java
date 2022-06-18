@@ -41,9 +41,14 @@ public class Application {
         String dataFile = properties.getProperty("data-file");
         writer = new Writer(dataFile);
         Reader reader = new Reader(dataFile);
-        List<Detail> details = reader.read(new TextDataHandlerImpl());
-        dataRepository = new DataRepository(details);
-        initServices(properties);
+        try {
+            List<Detail> details = reader.read(new TextDataHandlerImpl());
+            dataRepository = new DataRepository(details);
+            initServices(properties);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.out.println("读取数据失败");
+        }
     }
 
     // 初始化服务

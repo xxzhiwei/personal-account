@@ -30,8 +30,13 @@ public abstract class RecordService extends AccountService {
         if (textDataFormatter == null) {
             textDataFormatter = Detail::formatAsDetailStr;
         }
-        application.getWriter().write(detail, textDataFormatter);
-        application.getDataRepository().addDetail(detail);
-        System.out.println("登记成功！");
+        try {
+            application.getWriter().write(detail, textDataFormatter);
+            application.getDataRepository().addDetail(detail);
+            System.out.println("登记成功");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            System.out.println("登记失败");
+        }
     }
 }

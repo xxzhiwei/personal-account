@@ -13,27 +13,50 @@ public class Writer {
         this.path = path;
     }
 
-    public <T> void write(T t, DataHandler<String, T> handler) {
+    public <T> void write(T t, DataHandler<String, T> handler) throws Exception {
+        write(t, handler, false);
+    }
+
+    public <T> void write(T t, DataHandler<String, T> handler, boolean isFile) throws Exception {
         File file = new File(path);
+
         if (!file.exists()) {
-            File parentFile = file.getParentFile();
-            if (parentFile != null) {
-                if (!parentFile.exists()) {
-                    boolean created = parentFile.mkdirs();
-                    if (!created) {
-                        throw new RuntimeException("创建" + parentFile.getPath() + "失败");
+            // 文件夹：/user/data/
+            // 文件：/user/data/my.txt
+            if (isFile) {
+                File parentFile = file.getParentFile();
+                if (parentFile != null) {
+                    if (!parentFile.exists()) {
+                        boolean created = parentFile.mkdirs();
+                        if (!created) {
+                            throw new RuntimeException("创建" + parentFile.getPath() + "失败");
+                        }
                     }
                 }
             }
-            try {
+            else {
+                boolean dirsCreated = file.mkdirs();
+                if (!dirsCreated) {
+                    throw new RuntimeException("创建" + file.getPath() + "失败");
+                }
+                file = new File(path + File.separator + "data.txt");
+            }
+            boolean created = file.createNewFile();
+            if (!created) {
+                throw new RuntimeException("创建" + file.getPath() + "失败");
+            }
+        }
+
+        if (file.exists()) {
+            if (!file.isFile()) {
+                file = new File(path + File.separator + "data.txt");
                 boolean created = file.createNewFile();
                 if (!created) {
                     throw new RuntimeException("创建" + file.getPath() + "失败");
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
+
         FileWriter fw;
         BufferedWriter bw = null;
         try {
@@ -42,8 +65,6 @@ public class Writer {
 
             bw.write(handler.handle(t));
             bw.write("\n");
-        } catch (IOException e) {
-            e.printStackTrace();
         } finally {
             try {
                 if (bw != null) {
