@@ -18,7 +18,7 @@ public class CommandLineUtil {
         }
         String str = "";
         while (scanner.hasNext()) {
-            str = scanner.nextLine();
+            str = scanner.nextLine().trim();
             if ("".equals(str)) {
                 System.out.println(tips);
                 continue;

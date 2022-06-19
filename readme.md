@@ -2,6 +2,8 @@
 
 基于JavaSE开发的命令行小工具，涵盖了面向对象、接口、反射、io流、泛型、集合等特性的应用，可用于java基础知识的复习。（项目参考于[尚硅谷Java入门](https://www.bilibili.com/video/BV1Kb411W75N)) 一阶段项目*家庭收支记账软件*)
 
+![img.png](img.png)
+
 ## 运行
 
 - 方式一：在idea的环境下，运行主类的（src/com/aojiaodage/Application）main方法
