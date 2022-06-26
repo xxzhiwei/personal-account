@@ -1,16 +1,10 @@
 package com.aojiaodage.service.impl;
 
-import com.aojiaodage.enums.Services;
-import com.aojiaodage.util.CommandLineUtil;
 import com.aojiaodage.entity.Detail;
 import com.aojiaodage.enums.MoneyType;
-import com.aojiaodage.Application;
+import com.aojiaodage.util.CommandLineUtil;
 
 public class IncomeService extends RecordService {
-
-    public IncomeService(Application application) {
-        super(Services.INCOME.getDesc(), application);
-    }
 
     @Override
     public Detail makeDetail() {
