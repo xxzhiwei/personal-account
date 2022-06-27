@@ -1,6 +1,7 @@
 package com.aojiaodage.io;
 
-import com.aojiaodage.handler.DataHandler;
+import com.aojiaodage.entity.Detail;
+import com.aojiaodage.handler.TextDataHandler;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ public class Reader {
         this.path = path;
     }
 
-    public <T> List<T> read(DataHandler<T, String> handler) throws Exception {
+    public List<Detail> read(TextDataHandler handler) throws Exception {
         File file = new File(path);
-        List<T> list = new ArrayList<>();
+        List<Detail> list = new ArrayList<>();
         if (!file.exists()) {
             return list;
         }
@@ -26,7 +27,7 @@ public class Reader {
             isr = new FileReader(file);
             br = new BufferedReader(isr);
             while ((str = br.readLine()) != null) {
-                T entity = handler.handle(str);
+                Detail entity = handler.handle(str);
                 if (entity != null) {
                     list.add(entity);
                 }

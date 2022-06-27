@@ -1,15 +1,30 @@
 package com.aojiaodage.importer.impl;
 
+import com.aojiaodage.annotations.Autowired;
+import com.aojiaodage.annotations.Component;
 import com.aojiaodage.entity.Detail;
+import com.aojiaodage.enums.FileTypes;
 import com.aojiaodage.handler.impl.TextDataHandlerImpl;
 import com.aojiaodage.importer.FileImporter;
 import com.aojiaodage.io.Reader;
 
 import java.util.List;
 
-public class TextImporter implements FileImporter<List<Detail>> {
+@Component
+public class TextImporter implements FileImporter {
+
     @Override
-    public List<Detail> importFile(String path) throws Exception {
+    public String getSupport() {
+        return FileTypes.TEXT.getValue();
+    }
+
+    @Override
+    public Detail importData(String path) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Detail> importBatch(String path) throws Exception {
         Reader reader = new Reader(path);
         return reader.read(new TextDataHandlerImpl());
     }

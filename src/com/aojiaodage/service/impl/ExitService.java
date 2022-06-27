@@ -10,15 +10,17 @@ import java.util.Locale;
 @Service(order = 6, name = "退出")
 public class ExitService extends AccountService {
 
-    private final String[] commands = new String[]{"Y", "N"};
-
     @Override
     public void execute() {
         System.out.print("确认是否退出(Y/N)：");
-        String str = CommandLineUtil.readStr("请输入正确的指令", commands).toUpperCase(Locale.ROOT);
+        String str = CommandLineUtil.readStr("请输入正确的指令：").toUpperCase(Locale.ROOT);
 
         if ("Y".equals(str)) {
             AccountApplication.setExited(true);
+            return;
+        }
+        if (!"N".equals(str)) {
+            System.out.println("操作错误");
         }
     }
 }

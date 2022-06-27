@@ -1,5 +1,6 @@
 package com.aojiaodage.importer;
 
-public interface FileImporter<T> {
-    T importFile(String path) throws Exception;
+import com.aojiaodage.entity.Detail;
+
+public interface FileImporter extends IImporter<Detail> {
 }

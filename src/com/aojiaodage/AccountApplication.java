@@ -21,23 +21,34 @@ public class AccountApplication {
     private final Map<String, Object> components = new HashMap<>(); // 在构造器中初始化组件
     private final Map<String, String> componentTypeNames = new HashMap<>();
 
+    // 根据class从组件容器中获取组件，如果没有则尝试创建（符合条件时创建
     private Object getComponentOrElseCreate(Class<?> clazz) {
-        String typeName = clazz.getTypeName();
-        Object component = getComponent(typeName);
-        if (component == null) {
-            for (Object comp : components.values()) {
-                if (clazz.isAssignableFrom(comp.getClass())) {
-                    component = comp;
-                    break;
-                }
-            }
-        }
+        Object component = getComponent(clazz);
         if (component == null) {
             try {
                 component = createComponent(clazz);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("创建组件失败");
+            }
+        }
+        // 尝试加载@Configuration
+        if (component == null) {
+            componentWithConfigurationInit();
+            component = getComponent(clazz);
+        }
+        return component;
+    }
+    private Object getComponent(Class<?> clazz) {
+        String typeName = clazz.getTypeName();
+        Object component = getComponent(typeName);
+        if (component == null) {
+            for (Object comp : components.values()) {
+                // 判断组件是否为clazz的子类
+                if (clazz.isAssignableFrom(comp.getClass())) {
+                    component = comp;
+                    break;
+                }
             }
         }
         return component;
@@ -70,6 +81,7 @@ public class AccountApplication {
         run();
     }
 
+    // 创建参数列表
     private Object[] createArgs(Class<?>[] parameterTypes) {
         Object[] args = new Object[parameterTypes.length];
         for (int i=0; i<parameterTypes.length; i++) {
@@ -80,6 +92,7 @@ public class AccountApplication {
         return args;
     }
 
+    // 创建组件
     private Object createComponent(Class<?> clazz) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         Annotation annotation;
         if ((annotation = clazz.getAnnotation(Component.class)) == null && (annotation = clazz.getAnnotation(Configuration.class)) == null && (annotation = clazz.getAnnotation(Service.class)) == null) {
@@ -101,6 +114,9 @@ public class AccountApplication {
             String subTypeName = typeName.substring(typeName.lastIndexOf(".") + 1);
             componentId = getTypeNameWithLowercaseFirstLetter(subTypeName);
         }
+        if (components.containsKey(componentId)) {
+            return components.get(componentId);
+        }
         Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
         if (declaredConstructors.length > 1) {
             throw new RuntimeException("只能存在一个构造器");
@@ -117,6 +133,7 @@ public class AccountApplication {
         else {
             configuration = clazz.getAnnotation(Configuration.class);
         }
+        // 加载@Bean
         if (configuration != null) {
             Method[] declaredMethods = clazz.getDeclaredMethods();
             for (Method method : declaredMethods) {
@@ -137,7 +154,7 @@ public class AccountApplication {
                 componentTypeNames.put(methodReturnType.getTypeName(), beanId);
             }
         }
-
+        // 注入属性@Autowired
         Field[] declaredFields = clazz.getDeclaredFields();
         for (Field field : declaredFields) {
             Autowired autowired = field.getAnnotation(Autowired.class);
@@ -153,18 +170,25 @@ public class AccountApplication {
         return instance;
     }
 
+    // 加载组件【todo：将非业务逻辑抽离】
     private void componentInit() {
         try {
-            List<Class<?>> classesWithConfiguration = Starter.classes.stream().filter(clz -> clz.getAnnotation(Configuration.class) != null).collect(Collectors.toList());
-            for (Class<?> clazz : classesWithConfiguration) {
-                createComponent(clazz);
-            }
             // 注册组件
             for (Class<?> clazz : Starter.classes) {
-                if (classesWithConfiguration.contains(clazz)) {
-                    continue;
-                }
                 createComponent(clazz);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void componentWithConfigurationInit() {
+        List<Class<?>> classesWithConfiguration = Starter.classes.stream().filter(clz -> clz.getAnnotation(Configuration.class) != null).collect(Collectors.toList());
+        try {
+            for (Class<?> clazz : classesWithConfiguration) {
+                if (getComponent(clazz) == null) {
+                    createComponent(clazz);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,6 +209,7 @@ public class AccountApplication {
     // 初始化服务
     private void serviceInit() {
         Collection<Object> values = components.values();
+
         for (Object obj : values) {
             if (obj instanceof AccountService) {
                 Service annotation = obj.getClass().getAnnotation(Service.class);
@@ -197,11 +222,12 @@ public class AccountApplication {
                 while (serviceMap.containsKey(order)) {
                     order += 1;
                 }
-                serviceMap.put(order, (AccountService) obj);
                 if ("".equals(name)) {
                     name = componentTypeNames.get(obj.getClass().getTypeName());
                 }
-                menus.add(order + ". " + name);
+                AccountService service = (AccountService) obj;
+                service.setName(name);
+                serviceMap.put(order, service);
             }
         }
     }
@@ -211,7 +237,11 @@ public class AccountApplication {
         // 1、加载数据
         init();
         boolean contained = true;
-        // 2、运行服务【exited改为静态属性
+        Set<Integer> keys = serviceMap.keySet().stream().sorted((Integer::compareTo)).collect(Collectors.toCollection(LinkedHashSet::new));
+        List<String> menus = new ArrayList<>(keys.size());
+        for (Integer key : keys) {
+            menus.add(key + ". " + serviceMap.get(key).getName());
+        }
         while (!exited) {
             if (!contained) {
                 System.out.println("请输入正确的服务序号");

@@ -3,7 +3,7 @@ package com.aojiaodage.repository;
 import com.aojiaodage.annotations.Component;
 import com.aojiaodage.entity.Detail;
 import com.aojiaodage.enums.MoneyType;
-import com.aojiaodage.handler.TextDataHandler;
+import com.aojiaodage.handler.impl.TextDataHandlerImpl;
 import com.aojiaodage.io.Reader;
 
 import java.util.List;
@@ -47,9 +47,9 @@ public class DataRepository {
     }
 
     // 构造器中，不可使用@Autowired的属性（还没有注入
-    public DataRepository(Reader reader, TextDataHandler textDataHandler) {
+    public DataRepository(Reader reader) {
         try {
-            this.details = reader.read(textDataHandler);
+            this.details = reader.read(new TextDataHandlerImpl());
             calculateTotal();
         } catch (Exception exception) {
             exception.printStackTrace();
