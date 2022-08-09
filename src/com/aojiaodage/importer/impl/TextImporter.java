@@ -1,6 +1,5 @@
 package com.aojiaodage.importer.impl;
 
-import com.aojiaodage.annotations.Autowired;
 import com.aojiaodage.annotations.Component;
 import com.aojiaodage.entity.Detail;
 import com.aojiaodage.enums.FileTypes;

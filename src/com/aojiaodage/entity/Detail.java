@@ -63,4 +63,8 @@ public class Detail {
                 "," +
                 detail.getDate();
     }
+
+    public String toString() {
+        return formatAsDetailStr(this);
+    }
 }

@@ -3,8 +3,6 @@ package com.aojiaodage.core;
 import com.aojiaodage.annotations.Application;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
@@ -12,23 +10,21 @@ import java.util.List;
 
 public class Starter {
     public static final List<String> fullNames = new ArrayList<>();
-    public static List<Class<?>> classes;
+    private static List<Class<?>> classes;
+
+    public static List<Class<?>> getClasses() {
+        return classes;
+    }
     public static <T> void start(Class<T> clazz) {
         Application application = clazz.getAnnotation(Application.class);
 
         if (application == null) {
-            return;
+            throw new RuntimeException("找不到启动器");
         }
         String packageName = application.value();
-        String fullNameField = application.fullNameField();
         try {
             scanPackages(packageName);
             Starter.classes = filterClasses();
-            //Field declaredField = clazz.getDeclaredField(fullNameField);
-            Constructor<T> constructor = clazz.getConstructor();
-            //declaredField.setAccessible(true);
-            //declaredField.set(instance, classes);
-            T instance = constructor.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
