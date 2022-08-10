@@ -32,12 +32,7 @@ public class AccountApplication {
 
     // 初始化数据
     private void init() {
-        try {
-            serviceInit();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            System.out.println("初始化失败");
-        }
+        serviceInit();
     }
 
     // 初始化服务
@@ -56,7 +51,6 @@ public class AccountApplication {
                 order += 1;
             }
             if ("".equals(name)) {
-
                 String typeName = bean.getClass().getTypeName();
                 name = typeName.substring(typeName.lastIndexOf(".") + 1);
             }

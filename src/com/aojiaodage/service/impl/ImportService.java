@@ -37,8 +37,8 @@ public class ImportService extends AccountService {
     @Override
     public void execute() {
         System.out.println("目前支持的格式有：" + String.join(",", supports));
-        System.out.print("\n请输入文件路径：");
-        String filepath = CommandLineUtil.readStr("请输入正确的文件路径：");
+        System.out.print("\n请输入文件所在路径：");
+        String filepath = CommandLineUtil.readStr("请输入正确的路径：");
         int suffixIdx = filepath.lastIndexOf(".");
         if (suffixIdx == -1) {
             System.out.println("请输入带后缀名的文件");

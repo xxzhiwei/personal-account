@@ -17,7 +17,7 @@ public class ClassPathAnnotationApplicationContext implements BeanFactory {
 
     @Override
     public Object getBean(String id) {
-        return beanMap;
+        return beanMap.get(id);
     }
 
     public List<Object> getBeans(Class<?> clazz) {
@@ -30,6 +30,18 @@ public class ClassPathAnnotationApplicationContext implements BeanFactory {
         }
         return beans;
     }
+
+//    public <T> List<T> getBeans(Class<T> clazz) {
+//        Collection<Object> values = beanMap.values();
+//        List<T> beans = new ArrayList<>();
+//
+//        for (Object bean : values) {
+//            if (clazz.isAssignableFrom(bean.getClass())) {
+//                beans.add((T) bean);
+//            }
+//        }
+//        return beans;
+//    }
 
     public ClassPathAnnotationApplicationContext(Class<?> clazz) {
         Starter.start(clazz);
@@ -49,24 +61,6 @@ public class ClassPathAnnotationApplicationContext implements BeanFactory {
         classes.removeAll(classesWithConfiguration);
         for (Class<?> clazz : classes) {
             createBean(clazz);
-        }
-        beanInject();
-    }
-
-    private void beanInject() throws IllegalAccessException {
-        Collection<Object> values = beanMap.values();
-
-        for (Object bean : values) {
-            Field[] declaredFields = bean.getClass().getDeclaredFields();
-            for (Field field : declaredFields) {
-                Autowired autowired = field.getAnnotation(Autowired.class);
-                if (autowired == null) {
-                    continue;
-                }
-                Object propBean = getBean(field.getType());
-                field.setAccessible(true);
-                field.set(bean, propBean);
-            }
         }
     }
 
@@ -137,6 +131,16 @@ public class ClassPathAnnotationApplicationContext implements BeanFactory {
             }
         }
         // 注入属性@Autowired
+        Field[] declaredFields = clazz.getDeclaredFields();
+        for (Field field : declaredFields) {
+            Autowired autowired = field.getAnnotation(Autowired.class);
+            if (autowired == null) {
+                continue;
+            }
+            Object bean = getBeanOrElseCreate(field.getType());
+            field.setAccessible(true);
+            field.set(instance, bean);
+        }
         beanMap.put(beanId, instance);
         beanTypeNameToIdMap.put(typeName, beanId);
         return instance;

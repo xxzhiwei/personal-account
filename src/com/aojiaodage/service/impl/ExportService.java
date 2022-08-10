@@ -36,8 +36,8 @@ public class ExportService extends AccountService {
         for (int i = 0; i < supports.length; i++) {
             System.out.println((i + 1) + ". " + supports[i]);
         }
-        System.out.print("\n请输入文件路径：");
-        String filepath = CommandLineUtil.readStr("请输入正确的文件路径：");
+        System.out.print("\n请输入导出的路径：");
+        String filepath = CommandLineUtil.readStr("请输入正确的路径：");
         int suffixIdx = filepath.lastIndexOf(".");
         String suffix;
         // 输入带后缀名时的情况
