@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ClassPathAnnotationApplicationContext implements BeanFactory {
+public class AnnotationApplicationContext implements BeanFactory {
 
     private final Map<String, Object> beanMap = new HashMap<>(); // 在构造器中初始化组件
     private final Map<String, String> beanTypeNameToIdMap = new HashMap<>();
@@ -43,7 +43,7 @@ public class ClassPathAnnotationApplicationContext implements BeanFactory {
 //        return beans;
 //    }
 
-    public ClassPathAnnotationApplicationContext(Class<?> clazz) {
+    public AnnotationApplicationContext(Class<?> clazz) {
         Starter.start(clazz);
         try {
             beanInit(Starter.getClasses());

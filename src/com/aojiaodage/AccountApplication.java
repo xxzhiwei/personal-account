@@ -3,7 +3,7 @@ package com.aojiaodage;
 import com.aojiaodage.annotations.Application;
 import com.aojiaodage.annotations.Service;
 import com.aojiaodage.core.BeanFactory;
-import com.aojiaodage.core.ClassPathAnnotationApplicationContext;
+import com.aojiaodage.core.AnnotationApplicationContext;
 import com.aojiaodage.service.AccountService;
 import com.aojiaodage.util.CommandLineUtil;
 
@@ -27,7 +27,7 @@ public class AccountApplication {
     }
 
     public AccountApplication() {
-        this.context = new ClassPathAnnotationApplicationContext(AccountApplication.class);
+        this.context = new AnnotationApplicationContext(AccountApplication.class);
     }
 
     // 初始化数据
@@ -37,8 +37,8 @@ public class AccountApplication {
 
     // 初始化服务
     private void serviceInit() {
-        List<Object> beans = ((ClassPathAnnotationApplicationContext) context).getBeans(AccountService.class);
-
+        List<Object> beans = ((AnnotationApplicationContext) context).getBeans(AccountService.class);
+        System.out.print(System.getProperty("file.encoding"));
         for (Object bean : beans) {
             Service annotation = bean.getClass().getAnnotation(Service.class);
             if (annotation == null) {
