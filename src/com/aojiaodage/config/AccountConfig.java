@@ -4,7 +4,6 @@ import com.aojiaodage.annotations.Bean;
 import com.aojiaodage.annotations.Configuration;
 import com.aojiaodage.exporter.FileExporter;
 import com.aojiaodage.exporter.impl.TxtExporterImpl;
-import com.aojiaodage.handler.impl.TextDataHandlerImpl;
 import com.aojiaodage.importer.FileImporter;
 import com.aojiaodage.importer.impl.TextImporter;
 import com.aojiaodage.io.Reader;
@@ -26,6 +25,9 @@ public class AccountConfig {
         return new Reader(accountProperties.getProperties().getProperty("data-file"));
     }
 
+    /**
+     * 文件格式导出实现类
+     */
     @Bean
     public AccountExporter accountExporter() {
         AccountExporter accountExporter = new AccountExporter();
@@ -35,6 +37,9 @@ public class AccountConfig {
         return accountExporter;
     }
 
+    /**
+     * 文件格式导入实现类
+     */
     @Bean
     public AccountImporter accountImporter() {
         AccountImporter accountImporter = new AccountImporter();

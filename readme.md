@@ -61,8 +61,7 @@
 - **导入数据**
     
     将指定文件中的数据导入程序。目前只实现了txt文件数据导入，并且需要注意的是，txt文件数据需要符合特定的格式，比如在目前的txt文件数据导入实现中，规定文件中每行有四列数据， 
-  第一列表示金额，第二列表示金额类型，第三列表示金额的使用说明，最后一列表示日期，数据之间以分号相隔。其他文件格式的拓展：编写对应文件的实现类后（com.aojiaodage.importer.FileImporter），将该实现类注册到导入数据服务中（com.aojiaodage.service.impl.ImportService#fileImporterMap，
-  以后缀名为key，实现类为value）
+  第一列表示金额，第二列表示金额类型，第三列表示金额的使用说明，最后一列表示日期，数据之间以分号相隔。其他文件格式的拓展：编写对应文件的实现类后（com.aojiaodage.importer.FileImporter），将其加入AccountImporter.fileImporters中）
   
 - **导出数据**
     
