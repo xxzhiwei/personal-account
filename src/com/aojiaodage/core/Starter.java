@@ -54,6 +54,7 @@ public class Starter {
                     addFullName(name, packagePrefix);
                 }
             }
+            jarFile.close();
         }
         else {
             scanFullNames(new File(location.getPath()), packagePrefix);
