@@ -38,7 +38,6 @@ public class AccountApplication {
     // 初始化服务
     private void serviceInit() {
         List<Object> beans = ((AnnotationApplicationContext) context).getBeans(AccountService.class);
-        System.out.print(System.getProperty("file.encoding"));
         for (Object bean : beans) {
             Service annotation = bean.getClass().getAnnotation(Service.class);
             if (annotation == null) {

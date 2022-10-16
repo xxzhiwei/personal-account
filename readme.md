@@ -4,9 +4,32 @@
 
 ![img.png](img.png)
 
+## 项目结构
+
+.
+└── src
+    └── com
+        └── aojiaodage
+            ├── annotations -- 注解
+            ├── config
+            ├── core
+            ├── entity
+            ├── enums
+            ├── exporter -- 数据导入相关
+            │   └── impl 
+            ├── handler -- 数据解析&格式化相关
+            │   └── impl
+            ├── importer -- 数据导出相关
+            │   └── impl
+            ├── io -- io工具类
+            ├── repository
+            ├── service -- 服务类
+            │   └── impl 
+            └── util
+
 ## 运行
 
-- 方式一：在idea的环境下，运行主类的（src/com/aojiaodage/Application）main方法
+- 方式一：在开发环境下，运行主类的（src/com/aojiaodage/AccountApplication）main方法
 - 方式二：将项目打包后，以jar的形式运行（java -jar *.jar）
 
 ## 配置文件
@@ -14,11 +37,6 @@
 > src/account.properties
 
 属性说明
-
-* **services** 
-  
-    服务完整类名，以逗号分割，类的顺序对应服务菜单的序号（+1），如果想继续拓展服务，在编写完服务类后，将完整包名 
-  复制到此处即可
 
 * **data-file**
 
