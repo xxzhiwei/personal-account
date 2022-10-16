@@ -6,26 +6,28 @@
 
 ## 项目结构
 
+```text
 .
 └── src
     └── com
         └── aojiaodage
-            ├── annotations -- 注解
+            ├── annotations -- 自定义注解
             ├── config
             ├── core
             ├── entity
             ├── enums
-            ├── exporter -- 数据导入相关
+            ├── exporter -- 数据导入模块
             │   └── impl 
-            ├── handler -- 数据解析&格式化相关
+            ├── handler -- 数据解析&格式化模块
             │   └── impl
-            ├── importer -- 数据导出相关
+            ├── importer -- 数据导出模块
             │   └── impl
             ├── io -- io工具类
             ├── repository
-            ├── service -- 服务类
+            ├── service -- 服务模块
             │   └── impl 
             └── util
+```
 
 ## 运行
 
